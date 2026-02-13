@@ -46,8 +46,15 @@ jobs:
         working-directory: frontend
         run: npm audit signatures
 
+      - name: Generate frontend SBOM
+        working-directory: frontend
+        run: npx @cyclonedx/cyclonedx-npm --output-file ../sbom-frontend.json
+
       - name: Build & test backend
         run: mvn verify
+
+      - name: Generate backend SBOM
+        run: mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DoutputFormat=json -DoutputName=sbom-backend
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -80,3 +87,20 @@ jobs:
           subject-name: ${{ env.IMAGE }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
+
+      - name: Attest SBOM to Docker image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/attest-sbom@v2
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          sbom-path: sbom-frontend.json
+          push-to-registry: true
+
+      - name: Upload SBOMs as artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sboms
+          path: |
+            sbom-frontend.json
+            target/sbom-backend.json
