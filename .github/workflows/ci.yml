@@ -42,6 +42,10 @@ jobs:
           npm install
           npm run build
 
+      - name: Verify npm dependency provenance
+        working-directory: frontend
+        run: npm audit signatures
+
       - name: Build & test backend
         run: mvn verify
 
