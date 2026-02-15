@@ -65,7 +65,7 @@ jobs:
           token: ${{ secrets.XYGENI_TOKEN }}
           # Command to execute by the scanner
           # optional, default is scan --never-fail -d $GITHUB_WORKSPACE
-          command: scan -run=sast --never-fail -d $GITHUB_WORKSPACE
+          command: scan --run=sast --never-fail -d $GITHUB_WORKSPACE
           # GitHub token to retrieve repository information for misconfigurations and compliance.
           gh_token: # optional, default is $GITHUB_TOKEN
 
