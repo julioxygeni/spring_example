@@ -56,6 +56,19 @@ jobs:
       - name: Generate backend SBOM
         run: mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DoutputFormat=json -DoutputName=sbom-backend
 
+      - name: Xygeni Scanner
+        # You may pin to the exact commit or the version.
+        uses: xygeni/xygeni-action@ea66a5ad3128270e853f46013be382e761d930b9 #v5.38.1
+        #uses: xygeni/xygeni-action@v5.38.1
+        with:
+          # API token for authentication with Xygeni platform.
+          token: ${{ secrets.XYGENI_TOKEN }}
+          # Command to execute by the scanner
+          # optional, default is scan --never-fail -d $GITHUB_WORKSPACE
+          command: scan -run=sast --never-fail -d $GITHUB_WORKSPACE
+          # GitHub token to retrieve repository information for misconfigurations and compliance.
+          gh_token: # optional, default is $GITHUB_TOKEN
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
