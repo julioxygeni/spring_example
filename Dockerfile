@@ -15,7 +15,7 @@ COPY --from=frontend /app/frontend/dist src/main/resources/static/
 RUN mvn package -DskipTests
 
 # Stage 3: Runtime
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:21.0.10_7-jre-alpine
 WORKDIR /app
 COPY --from=backend /app/target/*.jar app.jar
 EXPOSE 8080
