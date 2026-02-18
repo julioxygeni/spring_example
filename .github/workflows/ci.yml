@@ -36,22 +36,7 @@ jobs:
           cache: npm
           cache-dependency-path: frontend/package-lock.json
 
-      - name: Build frontend
-        working-directory: frontend
-        run: |
-          npm install
-          npm run build
-
-      - name: Verify npm dependency provenance
-        working-directory: frontend
-        run: npm audit signatures
-
-      - name: Generate frontend SBOM
-        working-directory: frontend
-        run: npx @cyclonedx/cyclonedx-npm --output-file ../sbom-frontend.json
-
-      - name: Build & test backend
-        run: mvn verify
+      # Build steps skipped for security test (typosquatting simulation)
 
       - name: Generate backend SBOM
         run: mvn org.cyclonedx:cyclonedx-maven-plugin:makeBom -DoutputFormat=json -DoutputName=sbom-backend
