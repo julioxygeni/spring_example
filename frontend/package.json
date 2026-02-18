@@ -13,7 +13,7 @@
     "react-dom": "^18.3.1"
   },
   "optionalDependencies": {
-    "@weather-app/internal-utils": "1.0.0"
+    "weather-internal-utils": "1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",
